@@ -1,1 +1,0 @@
-# uw-note-taker
