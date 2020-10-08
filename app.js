@@ -4,7 +4,6 @@ const path = require("path");
 
 const json = require("./db/db.json")
 
-
 const app = express();
 var PORT = process.env.PORT || 3000;
 
@@ -22,6 +21,8 @@ app.get('/api/notes', (req, res) =>{
 })
 app.post('/api/notes', (req, res) =>{
     const newObj = req.body
+    let id = Math.random().toString(36).substr(2, 9)
+    newObj.id = id 
     json.push(newObj)
     res.json(json)
 })
