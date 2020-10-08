@@ -66,11 +66,13 @@ const updateDb = data =>{
             console.log("adding data to JSON");
         })
 }
-
+//helper function to read in the data from db.json
 const readDb = () =>{
+    //get the path
     const jsonPath = path.join(__dirname, "/db/db.json")
+    //read the file, but parse the result into json
     const json = JSON.parse(fs.readFileSync(jsonPath))
-    console.log(json)
+    //return the json for use in the routes
     return json
 }
 //start the server listening on the port, log out the port it's listening on
