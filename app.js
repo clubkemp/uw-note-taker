@@ -3,9 +3,6 @@ const express = require('express');
 const fs = require('fs');
 const path = require("path");
 
-//TODO: Reaplce with a read in function for each call?
-//require in the json doc so we don't have to read it in constantly
-const json = require("./db/db.json")
 
 //setup express into app
 const app = express();
@@ -15,6 +12,7 @@ var PORT = process.env.PORT || 3000;
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static("public"))
 
 //handles the route /notes by sending the notes.html
 app.get('/notes', (req, res) =>{
@@ -23,10 +21,12 @@ app.get('/notes', (req, res) =>{
 })
 //handles the api call on notes to return the json data saved on file
 app.get('/api/notes', (req, res) =>{
+    const json = readDb();
     res.json(json)
 })
 //handles a post request to notes
 app.post('/api/notes', (req, res) =>{
+    let json = readDb();
     //grab the request body containing our new note object
     const newObj = req.body
     //create a random id 0 9 numbers and leters
@@ -42,13 +42,13 @@ app.post('/api/notes', (req, res) =>{
 })
 //handles the delete request based on any id the use feeds it
 app.delete('/api/notes/:id', (req,res) =>{
+    const json = readDb();
     //filter through the array and grab anything that doesn't match the id provided
     const result = json.filter(note => note.id != req.params.id)
     //result than becomes everything the user doesn't want to delete
     //send that to the update db function
     updateDb(result)
-    //send and update statement to finish the route handle
-    res.send("updated value")
+    res.json(result)
 
 })
 //get wildcard, anything that isn't specified above gets sent to the index.html page
@@ -65,6 +65,13 @@ const updateDb = data =>{
             if (err) throw err;
             console.log("adding data to JSON");
         })
+}
+
+const readDb = () =>{
+    const jsonPath = path.join(__dirname, "/db/db.json")
+    const json = JSON.parse(fs.readFileSync(jsonPath))
+    console.log(json)
+    return json
 }
 //start the server listening on the port, log out the port it's listening on
 app.listen(PORT, () =>{
