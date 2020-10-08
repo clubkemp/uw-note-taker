@@ -1,16 +1,1 @@
-[
-    {
-        "title": "Test Title",
-        "text": "Test text"
-    },
-    {
-        "title": "foo",
-        "text": "bar",
-        "id": "bikn8psc3"
-    },
-    {
-        "title": "foo",
-        "text": "bar",
-        "id": "unki9gt9s"
-    }
-]
+[{"title":"Test Title","text":"Test text"},{"title":"foo","text":"bar","id":"ax5t9xybn"},{"title":"foo","text":"bar","id":"5ziyf58wu"}]
