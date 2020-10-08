@@ -1,4 +1,4 @@
-const express = require('express')
+const express = require('express');
 const fs = require('fs');
 const path = require("path");
 
@@ -21,18 +21,33 @@ app.get('/api/notes', (req, res) =>{
 })
 app.post('/api/notes', (req, res) =>{
     const newObj = req.body
+    
     let id = Math.random().toString(36).substr(2, 9)
     newObj.id = id 
     json.push(newObj)
+    updateDb(json)
     res.json(json)
 })
+app.delete('/api/notes/:id', (req,res) =>{
+    console.log(req.params)
 
+    const result = json.filter(note => note.id != req.params.id)
+    updateDb(result)
+    res.send("updated value")
+
+})
 
 app.get('*', (req, res) =>{
     res.sendFile(path.join(__dirname, "/public/index.html"));
 });
 
-
+const updateDb = data =>{
+    const jsonPath = path.join(__dirname, "/db/db.json")
+    fs.writeFile(jsonPath, JSON.stringify(data), (err) => {
+            if (err) throw err;
+            console.log("adding data to JSON");
+        })
+}
 
 
 //TODO: routes needed
